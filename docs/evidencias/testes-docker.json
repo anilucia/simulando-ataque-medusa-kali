@@ -1,0 +1,208 @@
+{
+  "data": "2026-11-14T13:36:55.956314-03:00",
+  "origem": "cliente HTTP Python no hospedeiro",
+  "url_local": "http://127.0.0.1:4280/",
+  "docker_engine": "29.2.1",
+  "rede": {
+    "interna": true,
+    "dvwa_banco_somente_rede_interna": true,
+    "proxy_com_rede_de_entrada": true,
+    "containers": [
+      {
+        "servico": "db",
+        "executando": true,
+        "health": "healthy",
+        "portas": {
+          "3306/tcp": null
+        }
+      },
+      {
+        "servico": "dvwa",
+        "executando": true,
+        "health": null,
+        "portas": {
+          "80/tcp": null
+        }
+      },
+      {
+        "servico": "web",
+        "executando": true,
+        "health": "healthy",
+        "portas": {
+          "80/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "4280"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "verificacoes": [
+    {
+      "nivel": "low",
+      "tentativa": 1,
+      "credencial": "invalida",
+      "aceita": false,
+      "http_status": 200,
+      "metodo": "GET",
+      "duracao_s": 0.047,
+      "contador_antes": 0,
+      "contador_depois": 0,
+      "mensagem": "usuario e/ou senha incorretos"
+    },
+    {
+      "nivel": "low",
+      "tentativa": 2,
+      "credencial": "invalida",
+      "aceita": false,
+      "http_status": 200,
+      "metodo": "GET",
+      "duracao_s": 0.016,
+      "contador_antes": 0,
+      "contador_depois": 0,
+      "mensagem": "usuario e/ou senha incorretos"
+    },
+    {
+      "nivel": "low",
+      "tentativa": 3,
+      "credencial": "correta",
+      "aceita": true,
+      "http_status": 200,
+      "metodo": "GET",
+      "duracao_s": 0.063,
+      "contador_antes": 0,
+      "contador_depois": 0,
+      "mensagem": "area protegida exibida"
+    },
+    {
+      "nivel": "impossible",
+      "tentativa": 1,
+      "credencial": "invalida",
+      "aceita": false,
+      "http_status": 200,
+      "metodo": "POST",
+      "duracao_s": 4.11,
+      "contador_antes": 0,
+      "contador_depois": 1,
+      "mensagem": "credencial incorreta ou conta bloqueada; aguardar 15 minutos"
+    },
+    {
+      "nivel": "impossible",
+      "tentativa": 2,
+      "credencial": "invalida",
+      "aceita": false,
+      "http_status": 200,
+      "metodo": "POST",
+      "duracao_s": 2.015,
+      "contador_antes": 1,
+      "contador_depois": 2,
+      "mensagem": "credencial incorreta ou conta bloqueada; aguardar 15 minutos"
+    },
+    {
+      "nivel": "impossible",
+      "tentativa": 3,
+      "credencial": "invalida",
+      "aceita": false,
+      "http_status": 200,
+      "metodo": "POST",
+      "duracao_s": 2.078,
+      "contador_antes": 2,
+      "contador_depois": 3,
+      "mensagem": "credencial incorreta ou conta bloqueada; aguardar 15 minutos"
+    },
+    {
+      "nivel": "impossible",
+      "tentativa": 4,
+      "credencial": "correta",
+      "aceita": false,
+      "http_status": 200,
+      "metodo": "POST",
+      "duracao_s": 3.062,
+      "contador_antes": 3,
+      "contador_depois": 4,
+      "mensagem": "credencial incorreta ou conta bloqueada; aguardar 15 minutos"
+    }
+  ],
+  "http_setup": 200,
+  "inicializacao": "estrutura existente preservada; sem reset",
+  "execucao_anterior": {
+    "verificacoes_modulo": 7,
+    "resultado": "comparacao concluida; arquivamento falhou na coleta de versao; conta removida",
+    "motivo_repeticao": "coleta de metadados corrigida; nova conta descartavel"
+  },
+  "login_inicial": "aceito com conta descartavel e token anti-CSRF",
+  "versoes": {
+    "dvwa": "imagem oficial identificada pelo digest e pelos metadados OCI",
+    "dvwa_oci": {
+      "org.opencontainers.image.description": "DVWA pre-built image.",
+      "org.opencontainers.image.licenses": "gpl-3.0",
+      "org.opencontainers.image.source": "https://github.com/digininja/DVWA"
+    },
+    "php": "8.5.11",
+    "nginx": "nginx version: nginx/1.30.6",
+    "mariadb": "mariadb  Ver 15.1 Distrib 10.11.19-MariaDB, for debian-linux-gnu (x86_64) using  EditLine wrapper",
+    "sistema_dvwa": "PRETTY_NAME=\"Debian GNU/Linux 13 (trixie)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"13\"\nVERSION=\"13 (trixie)\"\nVERSION_CODENAME=trixie\nDEBIAN_VERSION_FULL=13.7\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"",
+    "sistema_db": "PRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=jammy",
+    "rotas_dvwa": "Iface\tDestination\tGateway \tFlags\tRefCnt\tUse\tMetric\tMask\t\tMTU\tWindow\tIRTT                                                       \neth0\t000012AC\t00000000\t0001\t0\t0\t0\t0000FFFF\t0\t0\t0"
+  },
+  "digests": {
+    "ghcr.io/digininja/dvwa:latest": [
+      "ghcr.io/digininja/dvwa@sha256:8029450682bd70e2e8cd1ffe8e46dd1885ff2a913296091cebfa8ba0a7d36498"
+    ],
+    "mariadb:10.11": [
+      "mariadb@sha256:7d829180b5b2a9ba74f6242876ab401a0d7dd338a807e522ef92bc9698760f20"
+    ],
+    "nginx:stable-alpine": [
+      "nginx@sha256:901e593c95dc85f5a729f5765516321366ef4ac401821431d408897e95287d0a"
+    ]
+  },
+  "eventos_sanitizados": [
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:35:03 +0000] \"GET /vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4700 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:35:05 +0000] \"GET /vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4700 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:35:06 +0000] \"GET /vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4718 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:35:08 +0000] \"GET /vulnerabilities/brute/ HTTP/1.1\" 200 4755 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:35:08 +0000] \"POST /vulnerabilities/brute/ HTTP/1.1\" 200 5105 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:35:15 +0000] \"GET /vulnerabilities/brute/ HTTP/1.1\" 200 4755 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:35:15 +0000] \"POST /vulnerabilities/brute/ HTTP/1.1\" 200 5105 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:35:20 +0000] \"GET /vulnerabilities/brute/ HTTP/1.1\" 200 4755 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:35:20 +0000] \"POST /vulnerabilities/brute/ HTTP/1.1\" 200 5105 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:35:26 +0000] \"GET /vulnerabilities/brute/ HTTP/1.1\" 200 4755 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:35:26 +0000] \"POST /vulnerabilities/brute/ HTTP/1.1\" 200 5105 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:37:00 +0000] \"GET /vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4700 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:37:02 +0000] \"GET /vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4700 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:37:05 +0000] \"GET /vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4718 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:37:09 +0000] \"GET /vulnerabilities/brute/ HTTP/1.1\" 200 4755 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:37:09 +0000] \"POST /vulnerabilities/brute/ HTTP/1.1\" 200 5105 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:37:15 +0000] \"GET /vulnerabilities/brute/ HTTP/1.1\" 200 4755 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:37:15 +0000] \"POST /vulnerabilities/brute/ HTTP/1.1\" 200 5105 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:37:19 +0000] \"GET /vulnerabilities/brute/ HTTP/1.1\" 200 4755 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:37:19 +0000] \"POST /vulnerabilities/brute/ HTTP/1.1\" 200 5105 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:37:23 +0000] \"GET /vulnerabilities/brute/ HTTP/1.1\" 200 4755 \"-\" \"Python-urllib/3.11\"",
+    "dvwa-1  | 172.18.0.4 - - [14/Nov/2026:16:37:23 +0000] \"POST /vulnerabilities/brute/ HTTP/1.1\" 200 5105 \"-\" \"Python-urllib/3.11\"",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 POST /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 POST /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 POST /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 POST /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 POST /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 POST /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 POST /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 GET /vulnerabilities/brute/ 200",
+    "web-1   | 172.19.0.1 POST /vulnerabilities/brute/ 200"
+  ],
+  "conta_descartavel_removida": true
+}

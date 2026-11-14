@@ -1,0 +1,28 @@
+{
+  "data": "2026-11-14T13:40:15.862300-03:00",
+  "compose_config_valido": true,
+  "servicos": [
+    "web",
+    "dvwa",
+    "db",
+    "kali"
+  ],
+  "servicos_executados": [
+    "web",
+    "dvwa",
+    "db"
+  ],
+  "perfil_kali_executado": false,
+  "porta_publicada": "127.0.0.1:4280",
+  "dvwa_banco_kali_somente_rede_interna": true,
+  "proxy_com_rede_de_entrada": true,
+  "rota_padrao_ipv4_dvwa": false,
+  "bind_mount_apenas_config_nginx_leitura": true,
+  "env_ignorado_e_preservado": true,
+  "segredos_do_banco_ausentes_dos_arquivos_publicaveis": true,
+  "links_locais_conferidos": true,
+  "jsons_validos": true,
+  "contas_descartaveis_restantes": 0,
+  "verificacoes_arquivadas": 7,
+  "verificacoes_totais_em_duas_execucoes": 14
+}
