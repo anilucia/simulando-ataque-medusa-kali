@@ -1,0 +1,82 @@
+name: medusa-lab
+
+services:
+  web:
+    image: nginx:stable-alpine
+    ports:
+      - "127.0.0.1:4280:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      dvwa:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1/login.php || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+    networks:
+      - entrada
+      - laboratorio
+    restart: "no"
+    mem_limit: 128m
+
+  dvwa:
+    image: ghcr.io/digininja/dvwa:latest
+    environment:
+      DB_SERVER: db
+      DB_DATABASE: dvwa
+      DB_USER: dvwa
+      DB_PASSWORD: ${DVWA_DB_PASSWORD:?Execute python scripts/preparar-ambiente.py}
+      DEFAULT_SECURITY_LEVEL: impossible
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - laboratorio
+    restart: "no"
+    mem_limit: 256m
+
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DVWA_DB_ROOT_PASSWORD:?Execute python scripts/preparar-ambiente.py}
+      MARIADB_DATABASE: dvwa
+      MARIADB_USER: dvwa
+      MARIADB_PASSWORD: ${DVWA_DB_PASSWORD:?Execute python scripts/preparar-ambiente.py}
+    volumes:
+      - banco:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    networks:
+      - laboratorio
+    restart: "no"
+    mem_limit: 384m
+
+  kali:
+    profiles: ["ferramentas"]
+    build:
+      context: ./docker/kali
+    image: medusa-lab-kali:local
+    command: ["sleep", "infinity"]
+    init: true
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    networks:
+      - laboratorio
+    restart: "no"
+    mem_limit: 256m
+
+networks:
+  entrada:
+    driver: bridge
+  laboratorio:
+    internal: true
+
+volumes:
+  banco:
