@@ -1,114 +1,62 @@
-# Auditoria defensiva de autenticação: Kali Linux, Medusa e laboratório isolado
+# Auditoria defensiva de autenticação: Kali Linux e Medusa
 
-Projeto de estudo sobre tentativas repetidas de autenticação e formas de detectá-las e mitigá-las. O objetivo é compreender o risco e documentar controles defensivos em um ambiente local, isolado e autorizado.
+Laboratório de estudo sobre tentativas repetidas de login em FTP, DVWA e SMB, com evidências sanitizadas e recomendações de mitigação.
 
-> **Estado deste repositório:** este README é um roteiro de laboratório e um modelo de relatório. Nenhum teste foi executado e nenhum resultado deve ser considerado observado até que os campos de registro sejam preenchidos com evidências próprias.
+O projeto utiliza a adaptação permitida pelo desafio da DIO: compara respostas e controles de autenticação com contas fictícias e credenciais conhecidas. O Medusa foi usado em verificações individuais de FTP no Kali; os testes web usaram um cliente HTTP Python. Não houve descoberta de senhas desconhecidas, uso de wordlists ou enumeração de usuários.
 
-## Objetivos
+## Documentação
 
-- Entender, em nível conceitual, como tentativas repetidas de senha afetam FTP, formulários web e SMB.
-- Montar uma rede de laboratório sem conexão com redes de terceiros.
-- Observar registros e controles de autenticação durante testes autorizados.
-- Recomendar medidas para reduzir tentativas automatizadas e o impacto de credenciais comprometidas.
-- Registrar evidências sem publicar senhas, tokens, endereços públicos ou dados pessoais.
+- [Ambientes, distribuições e preparação das VMs](docs/ambientes.md)
+- [Como executar o laboratório Docker](docs/laboratorio-docker.md)
+- [Relatório de FTP, DVWA e SMB nas VMs](docs/relatorio.md)
+- [Relatório da comparação web no Docker](docs/relatorio-docker.md)
 
-## Escopo e regras de segurança
+## Ambientes utilizados
 
-Todos os testes devem permanecer nas VMs locais que você controla. Não aponte ferramentas para endereços públicos, redes corporativas, contas reais ou sistemas de terceiros. Não reutilize senhas reais. Use contas descartáveis, credenciais fictícias e o mínimo de tentativas necessário para observar o comportamento defensivo.
+| Etapa | Configuração | Data dos testes |
+|---|---|---|
+| Máquinas virtuais | Kali Linux e Metasploitable 2 no VirtualBox, somente em rede Host-only | 13/11/2026 |
+| Containers | DVWA e MariaDB em rede interna, com acesso local por proxy Nginx | 14/11/2026 |
 
-Este repositório não contém listas de senhas nem automação de tentativa de credenciais. A atividade deve ser conduzida somente conforme autorização explícita e regras do laboratório. Se o isolamento ou o escopo não puder ser confirmado, não execute testes.
+O Docker também inclui um perfil opcional de Kali com Medusa, que não foi usado na comparação web. A versão do DVWA instalada na VM é diferente da imagem Docker; os resultados são apresentados separadamente.
 
-## Ambiente de laboratório
+Com os containers ligados, o DVWA fica acessível em **http://127.0.0.1:4280/**. Os comandos de inicialização e encerramento estão no [guia Docker](docs/laboratorio-docker.md).
 
-### Componentes
+## Resultados
 
-- VirtualBox atualizado.
-- Kali Linux para observação e estudo.
-- Metasploitable 2 e/ou DVWA em uma VM separada.
-- Uma rede **Host-only** criada no VirtualBox, sem adaptador em modo *Bridged*.
+| Cenário | Observação principal | Evidência |
+|---|---|---|
+| FTP | Pelo hospedeiro: três falhas e um sucesso. Pelo Medusa no Kali: uma falha e um sucesso | [VMs](docs/relatorio.md#ftp) |
+| DVWA 1.0.7 na VM | Duas falhas e um sucesso em cada nível; High apresentou espera próxima de três segundos nas falhas | [VMs](docs/relatorio.md#dvwa) |
+| SMB | Mesma senha inválida rejeitada em duas contas fictícias; política consultada com limiar de bloqueio zero | [VMs](docs/relatorio.md#smb) |
+| DVWA no Docker | Low aceitou a senha válida após duas falhas; Impossible recusou a senha válida após três falhas | [Docker](docs/relatorio-docker.md) |
 
-### Preparação segura
+As medições e os eventos estão em [observacoes.json](docs/evidencias/observacoes.json) e [testes-docker.json](docs/evidencias/testes-docker.json). As amostras são pequenas e não constituem teste de carga nem auditoria completa de segurança.
 
-1. Crie uma rede Host-only no VirtualBox e confirme que ela não oferece roteamento para a rede local ou para a Internet.
-2. Configure os adaptadores das VMs para usar somente essa rede durante os exercícios.
-3. Não habilite pastas compartilhadas, área de transferência ou *drag-and-drop* entre o sistema hospedeiro e a VM vulnerável, a menos que isso seja indispensável.
-4. Inicialize as VMs e registre as versões e endereços privados atribuídos pelo próprio laboratório. Não presuma que um endereço padrão será igual no seu ambiente.
-5. Confirme que as VMs se comunicam entre si e que a VM vulnerável não alcança redes externas. Se houver acesso externo inesperado, desligue as VMs e corrija a configuração antes de continuar.
-6. Faça um snapshot antes dos testes e use contas de laboratório sem qualquer relação com contas pessoais.
-7. Mantenha os serviços de laboratório desligados quando não estiverem em uso.
+## Medidas de mitigação
 
-### Inventário
-
-| Item | Valor observado |
+| Risco | Medidas recomendadas |
 |---|---|
-| Sistema hospedeiro e versão | _Preencher_ |
-| VirtualBox e versão | _Preencher_ |
-| Kali Linux e versão | _Preencher_ |
-| Metasploitable 2 e/ou DVWA e versão | _Preencher_ |
-| Tipo e faixa da rede privada | _Preencher sem publicar dados sensíveis_ |
-| Data do teste | _Preencher_ |
+| Tentativas repetidas | Limitar por conta e origem, aplicar atrasos progressivos e bloqueios temporários calibrados |
+| Tentativas distribuídas entre contas | Correlacionar falhas de várias contas e emitir alertas |
+| Credenciais em URLs e registros | Usar POST, proteger o transporte e excluir senhas, cookies e tokens dos logs |
+| Credenciais fracas | Adotar senhas longas e únicas, bloquear senhas comprometidas e usar MFA quando suportado |
+| Serviços e protocolos antigos | Atualizar os serviços, revisar SMB1 e substituir FTP sem criptografia por uma alternativa protegida |
+| Exposição desnecessária | Restringir acesso por firewall, desativar contas e serviços sem uso e manter o laboratório isolado |
 
-## Roteiro de estudo
+O bloqueio do nível Impossible e o formato de log do proxy foram observados em execução. As demais medidas são recomendações; não foram todas implantadas ou retestadas. Bloqueios também podem ser usados para causar indisponibilidade de contas e precisam ser calibrados.
 
-Os cenários abaixo são para observação controlada e documentação. Use somente as interfaces do laboratório, credenciais fictícias e procedimentos autorizados pelo instrutor. Não publique comandos de tentativa em massa, listas de credenciais ou dados de acesso.
+## Aprendizados
 
-### FTP
+Rejeitar uma senha incorreta não demonstra, por si só, proteção contra tentativas repetidas. A comparação entre Low e Impossible mostrou o efeito do bloqueio por conta, enquanto os registros do DVWA revelaram a exposição de credenciais nos parâmetros da URL. No SMB, a consulta da política e a observação das respostas complementaram a análise dos eventos.
 
-Estude quais controles o serviço FTP oferece contra falhas repetidas de autenticação. Em um cenário autorizado, observe os registros do serviço e do sistema, a resposta a credenciais inválidas e se existe limitação de tentativas. Não use credenciais reais nem teste fora da VM de laboratório.
+## Escopo e proteção dos dados
 
-**Registre:** serviço e versão observados, controle existente, evidência sanitizada e oportunidade de melhoria.
-
-### Formulário web (DVWA)
-
-Use a aplicação vulnerável apenas localmente. Examine como o nível de segurança configurado afeta a validação do formulário, a resposta a falhas de autenticação, o registro de eventos e a presença de controles como atraso ou limitação de tentativas. A finalidade é comparar controles e propor correções, não obter acesso a contas reais.
-
-**Registre:** nível de segurança, comportamento observado, controles ausentes/presentes e evidência sanitizada. Não publique cookies de sessão, tokens ou credenciais.
-
-### SMB
-
-Estude o risco de *password spraying* como conceito: poucas senhas comuns distribuídas entre várias contas podem causar bloqueios e comprometer contas com senhas fracas. Faça a análise somente com contas fictícias preparadas para o laboratório e por meio de observação defensiva dos eventos do serviço. Evite enumeração automatizada de usuários ou qualquer teste em redes que não sejam suas.
-
-**Registre:** mecanismo de autenticação, política de senha e bloqueio, eventos observados e medidas de mitigação.
-
-## Registro dos resultados
-
-Preencha a tabela apenas após realizar os exercícios no ambiente isolado. Não invente resultados. Evite incluir comandos operacionais, senhas, nomes de usuário reais, IPs públicos ou informações que permitam reutilizar o teste contra terceiros.
-
-| Cenário | Data | Configuração/controle observado | Resultado e evidência sanitizada | Recomendação |
-|---|---|---|---|---|
-| FTP | _Pendente_ | _Pendente_ | _Pendente_ | _Pendente_ |
-| DVWA | _Pendente_ | _Pendente_ | _Pendente_ | _Pendente_ |
-| SMB | _Pendente_ | _Pendente_ | _Pendente_ | _Pendente_ |
-
-### Evidências
-
-Se incluir capturas de tela, salve-as em `images/` e remova ou oculte credenciais, cookies, tokens, nomes pessoais, endereços externos e informações do hospedeiro. Inclua uma legenda com data, cenário e o que a captura demonstra. Não inclua capturas que revelem instruções operacionais de tentativa automatizada.
-
-## Recomendações de mitigação
-
-- Aplicar senhas longas, únicas e bloqueio de senhas conhecidas como comprometidas.
-- Habilitar MFA sempre que suportado, especialmente para administração e acesso remoto.
-- Limitar tentativas por conta e por origem, com atrasos progressivos e bloqueios temporários cuidadosamente calibrados.
-- Monitorar falhas repetidas, tentativas distribuídas entre contas e padrões de origem incomuns; encaminhar alertas para a equipe responsável.
-- Evitar mensagens de erro que revelem se um usuário existe.
-- Desabilitar serviços e contas não utilizados e restringir FTP/SMB por firewall à menor faixa de rede necessária.
-- Preferir protocolos seguros; evitar FTP sem criptografia e revisar a configuração do SMB conforme as recomendações atuais do fornecedor.
-- Usar controles contra automação no formulário web, proteção de sessão, limitação de requisições e registro de eventos sem armazenar senhas.
-- Revisar periodicamente políticas de autenticação, registros e procedimentos de resposta a incidentes.
-- Tratar bloqueios para reduzir o risco de negação de serviço causada por bloqueios deliberados de contas.
-
-## Encerramento do laboratório
-
-Ao terminar, desligue as VMs, restaure o snapshot se necessário e confirme que a rede Host-only continua isolada. Remova contas e credenciais temporárias. Antes de publicar o repositório, revise o histórico e os arquivos para garantir que nenhum segredo ou dado sensível foi incluído.
+Use somente as VMs e os containers locais do laboratório, com contas descartáveis e senhas fictícias. Os testes registrados não envolveram contas reais ou sistemas de terceiros. O `.env` fica fora do Git; as evidências omitem senhas, cookies e tokens. Ao encerrar, desligue os ambientes e remova os dados temporários.
 
 ## Referências
 
 - [Kali Linux](https://www.kali.org/)
-- [DVWA — Damn Vulnerable Web Application](https://github.com/digininja/DVWA)
-- [Medusa — página do projeto](http://www.foofus.net/jmk/medusa/medusa.html)
-- [Nmap Reference Guide](https://nmap.org/book/)
-- [Documentação do VirtualBox](https://www.virtualbox.org/manual/)
-
-## Entrega
-
-Depois de executar os estudos e preencher os resultados com suas próprias observações, publique este projeto em um repositório público do GitHub. Revise cuidadosamente o conteúdo e as evidências antes da publicação. No formulário de entrega da DIO, inclua o link do repositório e uma breve descrição do aprendizado.
+- [Medusa](http://www.foofus.net/jmk/medusa/medusa.html)
+- [DVWA](https://github.com/digininja/DVWA)
+- [OWASP — autenticação](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
