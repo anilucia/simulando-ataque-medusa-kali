@@ -1,0 +1,204 @@
+{
+  "data": "2026-11-13T11:44:46.358354-03:00",
+  "origem": "hospedeiro Windows, interface Host-only",
+  "alvo": "VM Metasploitable 2",
+  "isolamento": {
+    "ipv4": "192.168.56.101/24",
+    "rota_padrao": false,
+    "consulta_rota_externa": "Network is unreachable (consulta local, sem envio externo)",
+    "metasploitable_para_kali": "PING 192.168.56.102 (192.168.56.102) 56(84) bytes of data.\n64 bytes from 192.168.56.102: icmp_seq=1 ttl=64 time=1.04 ms\n\n--- 192.168.56.102 ping statistics ---\n1 packets transmitted, 1 received, 0% packet loss, time 0ms\nrtt min/avg/max/mdev = 1.040/1.040/1.040/0.000 ms\nKernel IP routing table\nDestination     Gateway         Genmask         Flags Metric Ref    Use Iface\n192.168.56.0    0.0.0.0         255.255.255.0   U     0      0        0 eth0"
+  },
+  "ftp": [
+    {
+      "tentativa": 1,
+      "credencial": "invalida",
+      "aceita": false,
+      "resposta": "530 Login incorrect.",
+      "duracao_s": 3.344
+    },
+    {
+      "tentativa": 2,
+      "credencial": "invalida",
+      "aceita": false,
+      "resposta": "530 Login incorrect.",
+      "duracao_s": 3.094
+    },
+    {
+      "tentativa": 3,
+      "credencial": "invalida",
+      "aceita": false,
+      "resposta": "530 Login incorrect.",
+      "duracao_s": 3.828
+    },
+    {
+      "tentativa": 4,
+      "credencial": "correta",
+      "aceita": true,
+      "resposta": "230 Login successful.",
+      "duracao_s": 0.016
+    }
+  ],
+  "dvwa": [
+    {
+      "nivel": "low",
+      "tentativa": 1,
+      "credencial": "invalida",
+      "aceita": false,
+      "duracao_s": 0.062,
+      "resposta": "Username and/or password incorrect."
+    },
+    {
+      "nivel": "low",
+      "tentativa": 2,
+      "credencial": "invalida",
+      "aceita": false,
+      "duracao_s": 0.063,
+      "resposta": "Username and/or password incorrect."
+    },
+    {
+      "nivel": "low",
+      "tentativa": 3,
+      "credencial": "correta",
+      "aceita": true,
+      "duracao_s": 0.078,
+      "resposta": "Welcome to the password protected area [CONTA_LAB]"
+    },
+    {
+      "nivel": "medium",
+      "tentativa": 1,
+      "credencial": "invalida",
+      "aceita": false,
+      "duracao_s": 0.047,
+      "resposta": "Username and/or password incorrect."
+    },
+    {
+      "nivel": "medium",
+      "tentativa": 2,
+      "credencial": "invalida",
+      "aceita": false,
+      "duracao_s": 0.062,
+      "resposta": "Username and/or password incorrect."
+    },
+    {
+      "nivel": "medium",
+      "tentativa": 3,
+      "credencial": "correta",
+      "aceita": true,
+      "duracao_s": 0.047,
+      "resposta": "Welcome to the password protected area [CONTA_LAB]"
+    },
+    {
+      "nivel": "high",
+      "tentativa": 1,
+      "credencial": "invalida",
+      "aceita": false,
+      "duracao_s": 3.031,
+      "resposta": "Username and/or password incorrect."
+    },
+    {
+      "nivel": "high",
+      "tentativa": 2,
+      "credencial": "invalida",
+      "aceita": false,
+      "duracao_s": 3.016,
+      "resposta": "Username and/or password incorrect."
+    },
+    {
+      "nivel": "high",
+      "tentativa": 3,
+      "credencial": "correta",
+      "aceita": true,
+      "duracao_s": 0.031,
+      "resposta": "Welcome to the password protected area [CONTA_LAB]"
+    }
+  ],
+  "smb": [
+    {
+      "conta": "A",
+      "credencial": "invalida",
+      "aceita": false,
+      "resposta": "STATUS_LOGON_FAILURE",
+      "dialeto": "NT LM 0.12",
+      "duracao_s": 0.125
+    },
+    {
+      "conta": "A",
+      "credencial": "correta",
+      "aceita": true,
+      "resposta": "autenticacao aceita",
+      "dialeto": "NT LM 0.12",
+      "duracao_s": 0.063
+    },
+    {
+      "conta": "B",
+      "credencial": "invalida",
+      "aceita": false,
+      "resposta": "STATUS_LOGON_FAILURE",
+      "dialeto": "NT LM 0.12",
+      "duracao_s": 0.078
+    },
+    {
+      "conta": "B",
+      "credencial": "correta",
+      "aceita": true,
+      "resposta": "autenticacao aceita",
+      "dialeto": "NT LM 0.12",
+      "duracao_s": 0.047
+    }
+  ],
+  "politica_smb": [
+    "account policy value for bad lockout attempt is 0",
+    "account policy value for lockout duration is 30",
+    "account policy value for min password length is 5"
+  ],
+  "eventos_sanitizados": [
+    "Fri Nov 13 09:44:47 2026 [pid 4719] [[CONTA_LAB]] FAIL LOGIN: Client \"[IP_LAB]\"",
+    "Fri Nov 13 09:44:50 2026 [pid 4721] [[CONTA_LAB]] FAIL LOGIN: Client \"[IP_LAB]\"",
+    "Fri Nov 13 09:44:54 2026 [pid 4723] [[CONTA_LAB]] FAIL LOGIN: Client \"[IP_LAB]\"",
+    "Fri Nov 13 09:44:55 2026 [pid 4725] [[CONTA_LAB]] OK LOGIN: Client \"[IP_LAB]\"",
+    "Nov 13 09:44:44 metasploitable useradd[4703]: new group: name=[CONTA_LAB], GID=1003",
+    "Nov 13 09:44:44 metasploitable useradd[4703]: new user: name=[CONTA_LAB], UID=1003, GID=1003, home=/home/[CONTA_LAB], shell=/bin/bash",
+    "Nov 13 09:44:44 metasploitable useradd[4712]: new group: name=[CONTA_LAB], GID=1004",
+    "Nov 13 09:44:45 metasploitable useradd[4712]: new user: name=[CONTA_LAB], UID=1004, GID=1004, home=/home/[CONTA_LAB], shell=/bin/bash",
+    "Nov 13 09:44:45 metasploitable vsftpd: pam_unix(ftp:auth): authentication failure; logname= uid=0 euid=0 tty=ftp ruser=[CONTA_LAB] rhost=[IP_LAB]  user=[CONTA_LAB]",
+    "Nov 13 09:45:02 metasploitable smbd[4763]: pam_unix(samba:session): session opened for user [CONTA_LAB] by (uid=0)",
+    "Nov 13 09:45:02 metasploitable smbd[4763]: pam_unix(samba:session): session closed for user [CONTA_LAB]",
+    "Nov 13 09:45:02 metasploitable smbd[4786]: pam_unix(samba:session): session opened for user [CONTA_LAB] by (uid=0)",
+    "Nov 13 09:45:02 metasploitable smbd[4786]: pam_unix(samba:session): session closed for user [CONTA_LAB]",
+    "[IP_LAB] - - [13/Nov/2026:09:44:55 -0500] \"GET /dvwa/vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4576 \"-\" \"Python-urllib/3.11\"",
+    "[IP_LAB] - - [13/Nov/2026:09:44:55 -0500] \"GET /dvwa/vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4576 \"-\" \"Python-urllib/3.11\"",
+    "[IP_LAB] - - [13/Nov/2026:09:44:55 -0500] \"GET /dvwa/vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4595 \"-\" \"Python-urllib/3.11\"",
+    "[IP_LAB] - - [13/Nov/2026:09:44:56 -0500] \"GET /dvwa/vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4585 \"-\" \"Python-urllib/3.11\"",
+    "[IP_LAB] - - [13/Nov/2026:09:44:56 -0500] \"GET /dvwa/vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4604 \"-\" \"Python-urllib/3.11\"",
+    "[IP_LAB] - - [13/Nov/2026:09:44:56 -0500] \"GET /dvwa/vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4585 \"-\" \"Python-urllib/3.11\"",
+    "[IP_LAB] - - [13/Nov/2026:09:44:56 -0500] \"GET /dvwa/vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4579 \"-\" \"Python-urllib/3.11\"",
+    "[IP_LAB] - - [13/Nov/2026:09:44:59 -0500] \"GET /dvwa/vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4579 \"-\" \"Python-urllib/3.11\"",
+    "[IP_LAB] - - [13/Nov/2026:09:45:02 -0500] \"GET /dvwa/vulnerabilities/brute/?username=[CONTA_LAB]&password=[REMOVIDO]&Login=Login HTTP/1.1\" 200 4598 \"-\" \"Python-urllib/3.11\"",
+    "Fri Nov 13 09:45:42 2026 [pid 4804] [[CONTA_LAB]] FAIL LOGIN: Client \"[IP_LAB]\"",
+    "Fri Nov 13 09:45:44 2026 [pid 4806] [[CONTA_LAB]] OK LOGIN: Client \"[IP_LAB]\""
+  ],
+  "kali": {
+    "versao": "2026.3",
+    "medusa": "2.3",
+    "ipv4": "192.168.56.102/24",
+    "memoria_temporaria_mb": 384,
+    "isolamento": {
+      "codigo_saida": 0,
+      "saida_sanitizada": "192.168.56.0/24 dev eth0 proto kernel scope link src 192.168.56.102 metric 100 \nfe80::/64 dev eth0 proto kernel metric 1024 pref medium\nPING 192.168.56.101 (192.168.56.101) 56(84) bytes of data.\n64 bytes from 192.168.56.101: icmp_seq=1 ttl=64 time=6.52 ms\n\n--- 192.168.56.101 ping statistics ---\n1 packets transmitted, 1 received, 0% packet loss, time 0ms\nrtt min/avg/max/mdev = 6.518/6.518/6.518/0.000 ms\nRTNETLINK answers: Network is unreachable"
+    }
+  },
+  "medusa_ftp": [
+    {
+      "codigo_saida": 0,
+      "saida_sanitizada": "Medusa v2.3 [http://www.foofus.net] (C) JoMo-Kun / Foofus Networks <jmk@foofus.net>\n\n2026-11-13 09:45:43 ACCOUNT CHECK: [ftp] Host: 192.168.56.101 (1 of 1, 0 complete) User: [CONTA_LAB] (1 of 1, 0 complete) Password: [REMOVIDO] (1 of 1 complete)",
+      "credencial": "invalida",
+      "pares_fornecidos": 1
+    },
+    {
+      "codigo_saida": 0,
+      "saida_sanitizada": "Medusa v2.3 [http://www.foofus.net] (C) JoMo-Kun / Foofus Networks <jmk@foofus.net>\n\n2026-11-13 09:45:44 ACCOUNT CHECK: [ftp] Host: 192.168.56.101 (1 of 1, 0 complete) User: [CONTA_LAB] (1 of 1, 0 complete) Password: [REMOVIDO] (1 of 1 complete)\n2026-11-13 09:45:44 ACCOUNT FOUND: [ftp] Host: 192.168.56.101 User: [CONTA_LAB] Password: [REMOVIDO] [SUCCESS]",
+      "credencial": "correta",
+      "pares_fornecidos": 1
+    }
+  ]
+}
